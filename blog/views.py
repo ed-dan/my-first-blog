@@ -2,6 +2,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.utils import timezone
 from .forms import PostForm
+from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
+from django.views.generic.edit import CreateView
+
+
+class SignUp(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "registration/signup.html"
 
 # Create your views here.
 
