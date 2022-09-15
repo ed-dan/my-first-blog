@@ -7,5 +7,5 @@ urlpatterns = [
     path('post/new/', views.post_new, name='post_new'),
     path('post/<int:pk>/edit', views.post_edit, name='post_edit'),
     path('', views.home, name='home'),
-    path('/signup', views.SignUp.as_view(), name='signup'),
+    path('signup', views.SignUp.as_view(), name='signup'),
 ]
