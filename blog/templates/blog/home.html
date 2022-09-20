@@ -16,13 +16,15 @@
        <p>------------------------------------------------------------------------------------------------------------------</p>
        <br>
        <br>
-       {% for post in posts %}
+       {% for recipe in recipes %}
          <div class="post">
              <div class="date">
-                 {{ post.published_date }}
+
              </div>
-             <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-             <p>{{ post.text|linebreaksbr }}</p>
+             <h1>{{ recipe.title }}</h1>
+             {{ recipe.image }}
+             <img src="{{recipe.photo}}" alt="какого хера не грузит " width="50" height="40">
+             <p>{{ recipe.text|linebreaksbr }}</p>
          </div>
        {% endfor %}
 

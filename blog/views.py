@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Recipes
 from django.utils import timezone
 from .forms import PostForm
 from django.urls import reverse_lazy
@@ -12,17 +12,21 @@ class SignUp(CreateView):
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
+
 # Create your views here.
 
 
 def home(request):
     posts = Post.objects.order_by('published_date')
-    return render(request, "blog/home.html", {'posts': posts})
+    recipes = Recipes.objects.all()
+    return render(request, "blog/home.html", {'recipes': recipes})
 
 
-def post_list(request):
-    posts = Post.objects.order_by('published_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
+# походу постлист не нужен
+# def post_list(request):
+#     posts = Post.objects.order_by('published_date')
+#     recipes = Recipes.objects.all()
+#     return render(request, 'blog/post_list.html', {'recipes': recipes})
 
 
 def post_detail(request, pk):
@@ -43,6 +47,9 @@ def post_new(request):
     else:
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
+
+
+# def user_new(request):
 
 
 def post_edit(request, pk):

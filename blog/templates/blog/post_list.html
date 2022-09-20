@@ -1,13 +1,13 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-  {% for post in posts %}
+  {% for recipe in recipes %}
     <div class="post">
         <div class="date">
-            {{ post.published_date }}
+            {{ recipe.title }}
         </div>
         <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-        <p>{{ post.text|linebreaksbr }}</p>
+        <p>{{ recipe.text|linebreaksbr }}</p>
     </div>
   {% endfor %}
 {% endblock %}
