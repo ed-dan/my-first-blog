@@ -17,7 +17,7 @@ class SignUp(CreateView):
 
 
 def home(request):
-    posts = Post.objects.order_by('published_date')
+    #posts = Post.objects.order_by('published_date')
     recipes = Recipes.objects.all()
     return render(request, "blog/home.html", {'recipes': recipes})
 
@@ -33,6 +33,14 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     Post.objects.get(pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
+
+
+def show_recipe(request, pk):
+    r = get_object_or_404(Recipes, pk=pk)
+    # Post.objects.get(pk=pk)
+
+    Recipes.objects.get(pk=pk)
+    return render(request, 'blog/show_recipe.html', {'r': r})
 
 
 def post_new(request):

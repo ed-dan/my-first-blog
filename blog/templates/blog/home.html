@@ -21,10 +21,11 @@
              <div class="date">
 
              </div>
-             <h1>{{ recipe.title }}</h1>
-             {{ recipe.image }}
-             <img src="{{recipe.photo}}" alt="какого хера не грузит " width="50" height="40">
-             <p>{{ recipe.text|linebreaksbr }}</p>
+
+            <h1><a href="{% url 'show_recipe' recipe.pk %}">{{ recipe.title }}</a></h1>
+
+             <img src="{{recipe.photo.url}}" alt="какого хера не грузит " width="50" height="40">
+             <p>{{ recipe.text | truncatewords:10 }}</p>
          </div>
        {% endfor %}
 
