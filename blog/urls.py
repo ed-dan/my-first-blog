@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import show_category
 
 urlpatterns = [
     #path('', views.post_list, name='post_list'),
@@ -8,5 +9,7 @@ urlpatterns = [
     path('post/<int:pk>/edit', views.post_edit, name='post_edit'),
     path('', views.home, name='home'),
     path('signup', views.SignUp.as_view(), name='signup'),
-    path('recipe/<int:pk>', views.show_recipe, name='show_recipe'),
+    path('show_recipe/<int:pk>/', views.show_recipe, name='show_recipe'),
+    path('category/<int:category_id>/', views.show_category, name='show_category'),
+
 ]

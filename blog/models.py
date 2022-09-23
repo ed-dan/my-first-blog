@@ -20,10 +20,11 @@ class Post(models.Model):
 
 
 class Recipes(models.Model):
+    
     title = models.CharField(max_length=100)
     text = models.TextField(blank=True)
     photo = models.ImageField(upload_to='photos')
-    category = models.IntegerField()
+    category = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True)
@@ -32,7 +33,17 @@ class Recipes(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('', kwargs={'recipe_id': self.pk})
+        return reverse('show_recipe', kwargs={'pk': self.pk})
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100, db_index=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('show_category', kwargs={'category_id': self.pk})
 
 
 # class Recipe(models.Model):

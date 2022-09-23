@@ -13,19 +13,43 @@
        <br>
        <br>
        <br>
-       <p>------------------------------------------------------------------------------------------------------------------</p>
+        <br>
+    {% for c in cats %}
+    {% if c.pk == category_selected %}
+    <p>------------------------------------------------------------------------------------------------------------------</p>
+
+    <h3><p >{{ c.name }}</p></h3>
+    <p>------------------------------------------------------------------------------------------------------------------</p>
+
+    {% else %}
+<h3><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></h3>
+
+    {% endif %}
+    {% endfor %}
        <br>
-       <br>
+
+
        {% for recipe in recipes %}
          <div class="post">
              <div class="date">
 
-             </div>
-
-            <h1><a href="{% url 'show_recipe' recipe.pk %}">{{ recipe.title }}</a></h1>
+                 <h1><a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a></h1>
 
              <img src="{{recipe.photo.url}}" alt="какого хера не грузит " width="50" height="40">
              <p>{{ recipe.text | truncatewords:10 }}</p>
+
+             </div>
+             {% for c in cats %}
+                {% if c.category_id == category_selected %}
+             <li class="selected">{{ c.name }}</li>
+
+             {% else %}
+
+             {% endif %}
+             {% endfor %}
+
+
+
          </div>
        {% endfor %}
 
