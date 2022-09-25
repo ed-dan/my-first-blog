@@ -11,12 +11,12 @@
         {% if user.is_authenticated %}
 
       {% endif %}
-        <h1>{{ r.title }}</h1>
+        <h1>{{ recipe.title }}</h1>
 
 
 
-       <img src="{{r.photo.url}}" alt="какого хера не грузит " width="280" height="200">
-        <p>{{ r.text }}</p>
+       <img src="{{recipe.photo.url}}" alt="какого хера не грузит " width="280" height="200">
+        <p>{{ recipe.text }}</p>
     </div>
 
 {% endblock %}

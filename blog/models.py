@@ -20,11 +20,12 @@ class Post(models.Model):
 
 
 class Recipes(models.Model):
-    
+    cook = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,  null=True)
     title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     text = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='photos')
-    category = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
+    photo = models.ImageField(upload_to='photos', default='static/images/1.jpg',verbose_name='ФОТОЧКА')
+    category = models.ForeignKey('Category', on_delete=models.PROTECT)
     time_create = models.DateTimeField(auto_now_add=True)
     time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True)
@@ -33,11 +34,17 @@ class Recipes(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('show_recipe', kwargs={'pk': self.pk})
+        return reverse('show_recipe', kwargs={'slug': self.slug})
+
+    class Meta:
+        verbose_name = 'Ваши рецепты'
+        verbose_name_plural = 'Ваши рецепты'
+        ordering = ['title']
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index=True)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
 
     def __str__(self):
         return self.name
@@ -45,5 +52,9 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('show_category', kwargs={'category_id': self.pk})
 
+    class Meta:
+        verbose_name = 'Категории'
+        verbose_name_plural = 'Категории'
+        ordering = ['id']
 
 # class Recipe(models.Model):

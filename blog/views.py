@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Recipes, Category
 from django.utils import timezone
-from .forms import PostForm
+from .forms import PostForm, RecipesForm
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
@@ -20,10 +20,10 @@ class SignUp(CreateView):
 def home(request, *args, **kwargs):
     # posts = Post.objects.order_by('published_date')
     recipes = Recipes.objects.all()
-    cats = Category.objects.all()
+
     context = {
         'recipes': recipes,
-        'cats': cats,
+
         'category_selected': 0
     }
     return render(request, "blog/home.html", context=context)
@@ -44,50 +44,55 @@ def home(request, *args, **kwargs):
 
 def show_category(request, category_id):
     recipes = Recipes.objects.filter(category_id=category_id)
-    cats = Category.objects.all()
+
     context = {
         'recipes': recipes,
-        'cats': cats,
+
         'category_selected': category_id
     }
     return render(request, "blog/home.html", context=context)
 
 
-def show_recipe(request, pk):
-    r = get_object_or_404(Recipes, pk=pk)
+def show_recipe(request, slug):
+    recipe = get_object_or_404(Recipes, slug=slug)
     # Post.objects.get(pk=pk)
+    context = {
+        'recipe': recipe,
+        'title': recipe.title,
+        'category_selected': recipe.category_id
+    }
 
-    Recipes.objects.get(pk=pk)
-    return render(request, 'blog/show_recipe.html', {'r': r})
+    return render(request, 'blog/show_recipe.html', context=context)
 
 
-def post_new(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+# def post_new(request):
+#     if request.method == "POST":
+#         form = PostForm(request.POST)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.author = request.user
+#             post.published_date = timezone.now()
+#             post.save()
+#             return redirect('post_detail', pk=post.pk)
+#     else:
+#         form = PostForm()
+#     return render(request, 'blog/post_edit.html', {'form': form})
 
 
 def new_recipe(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
-        form_recipe = Recipes(request.POST)
-        if form.is_valid():
-            form_recipe = form.save(commit=False)
-            form_recipe.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
+       # form = PostForm(request.POST)
+        form_recipe = RecipesForm(request.POST)
+        if form_recipe.is_valid():
+            recipe = form_recipe.save(commit=False)
+            recipe.cook = request.user
+
+            recipe.save()
+            return redirect('/', pk=recipe.pk)
     else:
-        form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+       # form = PostForm()
+        form_recipe = RecipesForm()
+    return render(request, 'blog/post_edit.html', {'form_recipe': form_recipe})
 
 
 # def user_new(request):

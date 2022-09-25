@@ -1,6 +1,8 @@
 {% extends 'blog/base.html' %}
 
+{% load blog_tags %}
 {% block content %}
+
 
 <div class="der">
 <h1>Hello, {{ user.username|default:'Guest' }}</h1>
@@ -14,18 +16,8 @@
        <br>
        <br>
         <br>
-    {% for c in cats %}
-    {% if c.pk == category_selected %}
-    <p>------------------------------------------------------------------------------------------------------------------</p>
 
-    <h3><p >{{ c.name }}</p></h3>
-    <p>------------------------------------------------------------------------------------------------------------------</p>
-
-    {% else %}
-<h3><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></h3>
-
-    {% endif %}
-    {% endfor %}
+    {% show_categories 'name' category_selected %}
        <br>
 
 
@@ -55,6 +47,7 @@
 
 
       {% else %}
+    <h4>If you want to check your recipes you need to login </h4>
        <a href="{% url 'signup' %}">Sign Up</a>
       <a href="{% url 'login' %}">Login</a>
       {% endif %}

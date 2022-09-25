@@ -13,4 +13,4 @@ class RecipesForm(forms.ModelForm):
     """docstring forPostForm."""
     class Meta:
         model = Recipes
-        fields = ('title', 'text', 'photo', 'category')
+        fields = ('title',  'text',  'category')
