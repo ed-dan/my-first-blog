@@ -5,7 +5,8 @@
     <form method="POST" class="post-form" action="{% url 'new_recipe' %}">
         {% csrf_token %}
         {{ form_recipe.non_field_errors }}
-        {{ form_recipe.as_p }}
+
+        {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}
