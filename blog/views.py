@@ -6,7 +6,7 @@ from .forms import PostForm, RecipesForm
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
-
+from django.views.generic import ListView
 
 class SignUp(CreateView):
     form_class = UserCreationForm
@@ -15,7 +15,6 @@ class SignUp(CreateView):
 
 
 # Create your views here.
-
 
 def home(request, *args, **kwargs):
     # posts = Post.objects.order_by('published_date')
@@ -42,12 +41,12 @@ def home(request, *args, **kwargs):
 #     return render(request, 'blog/post_detail.html', {'post': post})
 
 
-def show_category(request, category_id):
+def show_category(request, slug, category_id):
     recipes = Recipes.objects.filter(category_id=category_id)
-
+    slug = Category.objects.filter(slug=slug)
     context = {
         'recipes': recipes,
-
+        'slug': slug,
         'category_selected': category_id
     }
     return render(request, "blog/home.html", context=context)
@@ -84,15 +83,20 @@ def new_recipe(request):
        # form = PostForm(request.POST)
         form_recipe = RecipesForm(request.POST)
         if form_recipe.is_valid():
-            recipe = form_recipe.save(commit=False)
-            recipe.cook = request.user
-
-            recipe.save()
-            return redirect('/', pk=recipe.pk)
+            try:
+                Recipes.objects.create(**form_recipe.cleaned_data)
+                return redirect('/')
+            except:
+                form_recipe.add_error(None, 'ОШИБКА' )
+            # recipe = form_recipe.save(commit=False)
+            # recipe.cook = request.user
+            #
+            # recipe.save()
+            # return redirect('/', pk=recipe.pk)
     else:
        # form = PostForm()
         form_recipe = RecipesForm()
-    return render(request, 'blog/post_edit.html', {'form_recipe': form_recipe})
+    return render(request, 'blog/new_recipe.html', {'form_recipe': form_recipe})
 
 
 # def user_new(request):
