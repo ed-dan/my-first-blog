@@ -95,9 +95,10 @@ class HomeCategory(ListView):
 
 class ShowRecipe(DetailView):
     model = Recipes
-    title = "RECIPE"
+    #title = "RECIPE"
     template_name = 'blog/show_recipe.html'
     context_object_name = 'recipe'
+
 
     def get_page_title(self, context):
         return context["recipe"].title
@@ -105,7 +106,6 @@ class ShowRecipe(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = context['recipe']
-
         return context
 
 
@@ -161,9 +161,14 @@ class ShowRecipe(DetailView):
 
 class UpdateRecipe(UpdateView):
     model = Recipes
+    context_object_name = 'recipe'
     fields = ['title', 'text', 'category', 'photo']
     template_name = 'blog/recipe_update.html'
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Обновление рецепта ' + str(context['recipe'])
+        return context
 
 # def post_edit(request, pk):
 #     post = get_object_or_404(Post, pk=pk)
