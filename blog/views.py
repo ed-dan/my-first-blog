@@ -6,7 +6,7 @@ from .forms import PostForm, RecipesForm
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 
 class SignUp(CreateView):
@@ -23,6 +23,7 @@ class AddRecipe(CreateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Добавление рецепта'
         return context
+
 
 class Home(ListView):
     model = Recipes
@@ -158,16 +159,22 @@ class ShowRecipe(DetailView):
 # def user_new(request):
 
 
-def post_edit(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == "POST":
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+class UpdateRecipe(UpdateView):
+    model = Recipes
+    fields = ['title', 'text', 'category', 'photo']
+    template_name = 'blog/recipe_update.html'
+
+
+# def post_edit(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
+#     if request.method == "POST":
+#         form = PostForm(request.POST, instance=post)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.author = request.user
+#             post.published_date = timezone.now()
+#             post.save()
+#             return redirect('post_detail', pk=post.pk)
+#     else:
+#         form = PostForm(instance=post)
+#     return render(request, 'blog/post_edit.html', {'form': form})
