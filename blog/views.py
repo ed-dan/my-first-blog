@@ -18,7 +18,7 @@ class SignUp(CreateView):
 class AddRecipe(CreateView):
     form_class = RecipesForm
     template_name = 'blog/new_recipe.html'
-
+    reverse_lazy = "home"
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Добавление рецепта'
