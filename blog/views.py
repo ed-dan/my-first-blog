@@ -161,7 +161,7 @@ class ShowRecipe(DetailView):
 
 class UpdateRecipe(UpdateView):
     model = Recipes
-    fields = ['title', 'text', 'category', 'photo']
+    fields = ['title', 'slug', 'text',  'category', 'photo']
     template_name = 'blog/recipe_update.html'
 
 
